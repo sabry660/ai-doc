@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Drilling Analysis System - Master Documentation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(180deg, #f0f4f8 0%, #e2e8f0 50%, #cbd5e1 100%);
+            min-height: 100vh;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.08), 0 4px 12px -4px rgba(0, 0, 0, 0.04);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+        }
+        
+        .card:hover {
+            box-shadow: 0 20px 60px -15px rgba(0, 0, 0, 0.12), 0 8px 20px -8px rgba(0, 0, 0, 0.08);
+            transform: translateY(-4px);
+            border-color: rgba(59, 130, 246, 0.15);
+        }
+        
+        pre[class*="language-"] {
+            border-radius: 8px;
+            margin: 1rem 0;
+            font-size: 0.875rem;
+        }
+        
+        code[class*="language-"] {
+            font-size: 0.875rem;
+        }
+        
+        .tree-line {
+            border-left: 2px dashed #cbd5e1;
+        }
+        
+        .nav-link {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            font-weight: 500;
+        }
+        
+        .nav-link:hover {
+            background-color: #eff6ff;
+            color: #1d4ed8;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #3b82f6, #1d4ed8);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        
+        .nav-link:hover::after {
+            width: 80%;
+        }
+        
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            
+            body {
+                background: white !important;
+                color: black !important;
+            }
+            
+            .card {
+                box-shadow: none !important;
+                border: 1px solid #e5e7eb !important;
+                page-break-inside: avoid;
+            }
+            
+            pre[class*="language-"] {
+                page-break-inside: avoid;
+                font-size: 8pt !important;
+            }
+            
+            .gradient-text {
+                -webkit-text-fill-color: #1d4ed8 !important;
+                background: none !important;
+            }
+            
+            a {
+                text-decoration: underline;
+                color: #1d4ed8 !important;
+            }
+        }
+        
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .section-number {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 50%, #1d4ed8 100%);
+            width: 48px;
+            height: 48px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.5rem;
+            box-shadow: 0 8px 20px -6px rgba(59, 130, 246, 0.5);
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Print Button -->
+    <div class="no-print fixed top-4 right-4 z-50">
+        <button onclick="window.print()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg shadow-lg flex items-center gap-2 transition-all">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+            </svg>
+            Print to PDF
+        </button>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="no-print bg-white border-b border-gray-200 sticky top-0 z-40 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <h1 class="text-xl font-bold gradient-text">Drill Bit AI Documentation</h1>
+                <div class="flex gap-4 text-sm">
+                    <a href="#big-picture" class="nav-link text-gray-600 hover:text-blue-600 px-3 py-2 rounded">Big Picture</a>
+                    <a href="#data-discovery" class="nav-link text-gray-600 hover:text-blue-600 px-3 py-2 rounded">Data Discovery</a>
+                    <a href="#ml-model" class="nav-link text-gray-600 hover:text-blue-600 px-3 py-2 rounded">ML Model</a>
+                    <a href="#full-stack" class="nav-link text-gray-600 hover:text-blue-600 px-3 py-2 rounded">Full-Stack Flow</a>
+                    <a href="#technical" class="nav-link text-gray-600 hover:text-blue-600 px-3 py-2 rounded">Technical</a>
+                    <a href="#project-map" class="nav-link text-gray-600 hover:text-blue-600 px-3 py-2 rounded">Project Map</a>
+                    <a href="#story" class="nav-link text-gray-600 hover:text-blue-600 px-3 py-2 rounded">Story</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto px-4 py-8">
+        <!-- Header -->
+        <header class="text-center mb-12 animate-fade-in">
+            <div class="inline-block p-4 bg-blue-100 rounded-full mb-6">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+            </div>
+            <h1 class="text-5xl font-bold mb-4 gradient-text">Advanced Drilling Analysis System</h1>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                A comprehensive machine learning platform that uses AI to predict drill bit wear and optimize drilling operations through multi-modal data analysis.
+            </p>
+            <div class="flex justify-center gap-4 mt-6">
+                <span class="bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-medium">Multi-Modal AI</span>
+                <span class="bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-medium">Real-Time Analysis</span>
+                <span class="bg-purple-100 text-purple-800 px-4 py-2 rounded-full text-sm font-medium">Predictive Maintenance</span>
+            </div>
+        </header>
+
+        <!-- Section 1: The Big Picture -->
+        <section id="big-picture" class="mb-16 animate-fade-in">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="section-number">1</div>
+                <h2 class="text-3xl font-bold">The Big Picture</h2>
+            </div>
+            
+            <div class="card p-8 mb-8">
+                <h3 class="text-2xl font-semibold text-blue-600 mb-4">What This Project Does (ELI5)</h3>
+                <p class="text-gray-700 text-lg leading-relaxed mb-6">
+                    Imagine you have a <strong>super-smart robot assistant</strong> that watches over drilling machines. Just like a doctor checks your health by looking at you and taking measurements, this AI system checks the health of drill bits by:
+                </p>
+                <div class="grid md:grid-cols-2 gap-6 mb-6">
+                    <div class="bg-blue-50 p-6 rounded-xl">
+                        <div class="w-12 h-12 bg-blue-500 rounded-lg mb-3 flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                        </div>
+                        <h4 class="font-bold text-blue-800 mb-2">Looking at Pictures</h4>
+                        <p class="text-gray-700">The AI looks at photos of drill bits to see if they look worn out, like new, or somewhere in between.</p>
+                    </div>
+                    <div class="bg-green-50 p-6 rounded-xl">
+                        <div class="w-12 h-12 bg-green-500 rounded-lg mb-3 flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                        </div>
+                        <h4 class="font-bold text-green-800 mb-2">Reading Sensor Numbers</h4>
+                        <p class="text-gray-700">It reads numbers from sensors that measure speed, pressure, and vibration - like checking your pulse and temperature.</p>
+                    </div>
+                </div>
+                <p class="text-gray-700 text-lg leading-relaxed">
+                    Then, it combines both pieces of information to tell operators: <strong>"Hey, this drill bit will last about 42 more hours before it needs replacement!"</strong> This saves money and prevents breakdowns.
+                </p>
+            </div>
+
+            <div class="card p-8">
+                <h3 class="text-2xl font-semibold text-blue-600 mb-4">Business Value (Professional)</h3>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="border-l-4 border-blue-500 pl-4">
+                        <h4 class="font-bold text-gray-800 mb-2">Cost Reduction</h4>
+                        <p class="text-gray-600">Predictive maintenance reduces unplanned downtime and extends equipment life.</p>
+                    </div>
+                    <div class="border-l-4 border-green-500 pl-4">
+                        <h4 class="font-bold text-gray-800 mb-2">Operational Efficiency</h4>
+                        <p class="text-gray-600">Real-time optimization of drilling parameters improves rate of penetration (ROP).</p>
+                    </div>
+                    <div class="border-l-4 border-purple-500 pl-4">
+                        <h4 class="font-bold text-gray-800 mb-2">Risk Mitigation</h4>
+                        <p class="text-gray-600">Early anomaly detection prevents equipment failures and safety incidents.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Data Discovery -->
+        <section id="data-discovery" class="mb-16 animate-fade-in">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="section-number">2</div>
+                <h2 class="text-3xl font-bold">Data Discovery Phase</h2>
+            </div>
+
+            <div class="card p-8 mb-8">
+                <h3 class="text-2xl font-semibold text-blue-600 mb-4">The Data Story (ELI5)</h3>
+                <p class="text-gray-700 text-lg leading-relaxed mb-6">
+                    Before building the AI, we had to <strong>explore and understand our data</strong> - like being a detective solving a mystery. Here's what we found:
+                </p>
+                
+                <div class="space-y-6">
+                    <div class="bg-yellow-50 p-6 rounded-xl">
+                        <h4 class="font-bold text-yellow-800 mb-2 flex items-center gap-2">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+                            Step 1: Finding the Data Treasure
+                        </h4>
+                        <p class="text-gray-700 mb-3">We discovered <strong>9,998 drilling data points</strong> in a CSV file - that's like having 9,998 stories about how the drilling machine performed!</p>
+                        <div class="bg-white p-4 rounded-lg">
+                            <p class="text-sm font-mono text-gray-600">File: data/data.csv (1.3 MB)</p>
+                            <p class="text-sm text-gray-500">Contains 11 sensor measurements per data point</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-orange-50 p-6 rounded-xl">
+                        <h4 class="font-bold text-orange-800 mb-2 flex items-center gap-2">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                            Step 2: Cleaning the Data
+                        </h4>
+                        <p class="text-gray-700 mb-3">Data is messy! We had to clean it up:</p>
+                        <ul class="list-disc list-inside text-gray-700 space-y-1">
+                            <li>Renamed confusing column names (like "SMSpeed" → "Surface_Motor_Speed")</li>
+                            <li>Checked for missing values (luckily, there were none!)</li>
+                            <li>Created new "smart" features by combining existing ones</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-green-50 p-6 rounded-xl">
+                        <h4 class="font-bold text-green-800 mb-2 flex items-center gap-2">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
+                            Step 3: Discovering Hidden Patterns
+                        </h4>
+                        <p class="text-gray-700 mb-3">We found amazing secrets in the data:</p>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="bg-white p-4 rounded-lg">
+                                <p class="font-bold text-gray-800">Strong Correlations Found:</p>
+                                <ul class="text-sm text-gray-600 mt-2 space-y-1">
+                                    <li>• Specific Energy ↔ Drilling Strength: <strong>99.3%</strong></li>
+                                    <li>• Weight on Bit ↔ Torque: <strong>98.4%</strong></li>
+                                    <li>• Downhole Pressure ↔ Weight on Bit: <strong>90.4%</strong></li>
+                                </ul>
+                            </div>
+                            <div class="bg-white p-4 rounded-lg">
+                                <p class="font-bold text-gray-800">Operational Phases:</p>
+                                <ul class="text-sm text-gray-600 mt-2 space-y-1">
+                                    <li>• High Efficiency: 3,283 samples (32.8%)</li>
+                                    <li>• Normal Operations: 3,383 samples (33.8%)</li>
+                                    <li>• Low Efficiency: 3,283 samples (32.8%)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-blue-50 p-6 rounded-xl">
+                        <h4 class="font-bold text-blue-800 mb-2 flex items-center gap-2">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                            Step 4: Image Data Discovery
+                        </h4>
+                        <p class="text-gray-700 mb-3">We also found images of drill bits organized into folders:</p>
+                        <div class="grid md:grid-cols-3 gap-4">
+                            <div class="bg-white p-4 rounded-lg text-center">
+                                <p class="text-3xl font-bold text-green-600">43</p>
+                                <p class="text-sm text-gray-600">Healthy images</p>
+                            </div>
+                            <div class="bg-white p-4 rounded-lg text-center">
+                                <p class="text-3xl font-bold text-yellow-600">19</p>
+                                <p class="text-sm text-gray-600">Medium images</p>
+                            </div>
+                            <div class="bg-white p-4 rounded-lg text-center">
+                                <p class="text-3xl font-bold text-red-600">18</p>
+                                <p class="text-sm text-gray-600">Worn images</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card p-8">
+                <h3 class="text-2xl font-semibold text-blue-600 mb-4">Technical Data Summary</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="bg-gray-100">
+                                <th class="p-3 text-left">Data Source</th>
+                                <th class="p-3 text-left">Format</th>
+                                <th class="p-3 text-left">Size</th>
+                                <th class="p-3 text-left">Key Features</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b">
+                                <td class="p-3">Sensor Data</td>
+                                <td class="p-3">CSV</td>
+                                <td class="p-3">9,998 rows × 11 columns</td>
+                                <td class="p-3">Speed, Pressure, Flow, ROP, Torque, etc.</td>
+                            </tr>
+                            <tr class="border-b">
+                                <td class="p-3">Image Data</td>
+                                <td class="p-3">JPEG</td>
+                                <td class="p-3">80 images</td>
+                                <td class="p-3">Drill bit visual condition</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3">Engineered Features</td>
+                                <td class="p-3">Derived</td>
+                                <td class="p-3">15 features</td>
+                                <td class="p-3">Ratios, indices, efficiency metrics</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: ML Model -->
+        <section id="ml-model" class="mb-16 animate-fade-in">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="section-number">3</div>
+                <h2 class="text-3xl font-bold">The ML Model</h2>
+            </div>
+
+            <div class="card p-8 mb-8">
+                <h3 class="text-2xl font-semibold text-blue-600 mb-4">How the AI Learns (ELI5)</h3>
+                <p class="text-gray-700 text-lg leading-relaxed mb-6">
+                    Think of training an AI like <strong>teaching a child</strong>. We show the AI thousands of examples, and it learns to recognize patterns. Here's how our AI was trained:
+                </p>
+
+                <div class="space-y-6">
+                    <div class="bg-purple-50 p-6 rounded-xl">
+                        <h4 class="font-bold text-purple-800 mb-2 flex items-center gap-2">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                            Model 1: The Image Expert (CNN)
+                        </h4>
+                        <p class="text-gray-700 mb-3">A <strong>Convolutional Neural Network</strong> is like having a super-powered eye. It looks at drill bit images and learns to spot patterns:</p>
+                        <ul class="list-disc list-inside text-gray-700 space-y-1">
+                            <li>It scans the image piece by piece (like reading a book)</li>
+                            <li>It detects edges, shapes, and textures</li>
+                            <li>It combines these to decide: Healthy, Medium, or Worn</li>
+                        </ul>
+                        <div class="mt-4 bg-white p-4 rounded-lg">
+                            <p class="text-sm font-mono text-gray-600">Accuracy: ~57% on validation (limited by small dataset)</p>
+                            <p class="text-sm text-gray-500">Architecture: 4 convolutional layers + 2 dense layers</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-green-50 p-6 rounded-xl">
+                        <h4 class="font-bold text-green-800 mb-2 flex items-center gap-2">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
+                            Model 2: The Number Expert (Random Forest)
+                        </h4>
+                        <p class="text-gray-700 mb-3">A <strong>Random Forest</strong> is like asking 100 experts for their opinion and taking the majority vote:</p>
+                        <ul class="list-disc list-inside text-gray-700 space-y-1">
+                            <li>Each "tree" in the forest makes a decision based on sensor data</li>
+                            <li>They vote on the answer, and the most common vote wins</li>
+                            <li>This makes it very accurate and hard to fool</li>
+                        </ul>
+                        <div class="mt-4 bg-white p-4 rounded-lg">
+                            <p class="text-sm font-mono text-gray-600">ROP Prediction R²: <strong>0.990</strong> (99% accuracy!)</p>
+                            <p class="text-sm font-mono text-gray-600">Phase Classification: <strong>64.8%</strong> accuracy</p>
+                            <p class="text-sm font-mono text-gray-600">Anomaly Detection: <strong>100%</strong> accuracy</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-blue-50 p-6 rounded-xl">
+                        <h4 class="font-bold text-blue-800 mb-2 flex items-center gap-2">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+                            Model 3: The Fusion Master
+                        </h4>
+                        <p class="text-gray-700 mb-3">The <strong>Fusion Model</strong> combines both experts for the best prediction:</p>
+                        <ul class="list-disc list-inside text-gray-700 space-y-1">
+                            <li>It takes the image expert's opinion</li>
+                            <li>It takes the number expert's opinion</li>
+                            <li>It calculates a "Risk-Utility Index" (RUI) score</li>
+                            <li>It gives you a final, super-accurate prediction</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card p-8">
+                <h3 class="text-2xl font-semibold text-blue-600 mb-4">Model Performance Metrics</h3>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="font-bold text-gray-800 mb-3">Image Classification (CNN)</h4>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600">Validation Accuracy</span>
+                                <span class="font-mono font-bold text-blue-600">57%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-blue-600 h-2 rounded-full" style="width: 57%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-gray-800 mb-3">ROP Prediction (Random Forest)</h4>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600">R² Score</span>
+                                <span class="font-mono font-bold text-green-600">0.990</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-green-600 h-2 rounded-full" style="width: 99%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-gray-800 mb-3">Phase Classification</h4>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600">Accuracy</span>
+                                <span class="font-mono font-bold text-yellow-600">64.8%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-yellow-600 h-2 rounded-full" style="width: 65%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-gray-800 mb-3">Anomaly Detection</h4>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600">F1-Score</span>
+                                <span class="font-mono font-bold text-purple-600">1.000</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-purple-600 h-2 rounded-full" style="width: 100%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Full-Stack Flow -->
+        <section id="full-stack" class="mb-16 animate-fade-in">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="section-number">4</div>
+                <h2 class="text-3xl font-bold">Full-Stack Flow</h2>
+            </div>
+
+            <div class="card p-8 mb-8">
+                <h3 class="text-2xl font-semibold text-blue-600 mb-4">The Journey of a Request (ELI5)</h3>
+                <p class="text-gray-700 text-lg leading-relaxed mb-6">
+                    Imagine sending a letter through the postal system. Here's how a user's request travels through our system:
+                </p>
+
+                <div class="relative">
+                    <div class="absolute left-8 top-0 bottom-0 w-1 bg-blue-200"></div>
+                    
+                    <div class="relative flex items-start gap-6 mb-8">
+                        <div class="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold z-10">1</div>
+                        <div class="flex-1 bg-blue-50 p-6 rounded-xl">
+                            <h4 class="font-bold text-blue-800 mb-2">User Action</h4>
+                            <p class="text-gray-700">The user opens the web app on their computer, uploads a drill bit photo, and enters sensor numbers (speed, pressure, etc.).</p>
+                        </div>
+                    </div>
+
+                    <div class="relative flex items-start gap-6 mb-8">
+                        <div class="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center text-white font-bold z-10">2</div>
+                        <div class="flex-1 bg-green-50 p-6 rounded-xl">
+                            <h4 class="font-bold text-green-800 mb-2">Frontend (React)</h4>
+                            <p class="text-gray-700">The React app collects the data, shows a nice loading animation, and sends everything to the backend server.</p>
+                        </div>
+                    </div>
+
+                    <div class="relative flex items-start gap-6 mb-8">
+                        <div class="w-16 h-16 bg-yellow-500 rounded-full flex items-center justify-center text-white font-bold z-10">3</div>
+                        <div class="flex-1 bg-yellow-50 p-6 rounded-xl">
+                            <h4 class="font-bold text-yellow-800 mb-2">Backend API (Flask)</h4>
+                            <p class="text-gray-700">The Flask server receives the request, validates the data, and prepares it for the AI models.</p>
+                        </div>
+                    </div>
+
+                    <div class="relative flex items-start gap-6 mb-8">
+                        <div class="w-16 h-16 bg-purple-500 rounded-full flex items-center justify-center text-white font-bold z-10">4</div>
+                        <div class="flex-1 bg-purple-50 p-6 rounded-xl">
+                            <h4 class="font-bold text-purple-800 mb-2">AI Models</h4>
+                            <p class="text-gray-700">The AI analyzes the image with CNN and the numbers with Random Forest, then combines the results.</p>
+                        </div>
+                    </div>
+
+                    <div class="relative flex items-start gap-6">
+                        <div class="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center text-white font-bold z-10">5</div>
+                        <div class="flex-1 bg-red-50 p-6 rounded-xl">
+                            <h4 class="font-bold text-red-800 mb-2">Response Back to User</h4>
+                            <p class="text-gray-700">The prediction travels back through the system, and the user sees: "Wear Level: Medium, Remaining Life: 42 hours"</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card p-8">
+                <h3 class="text-2xl font-semibold text-blue-600 mb-4">System Architecture Diagram</h3>
+                <div class="bg-gray-50 p-6 rounded-xl">
+                    <pre class="text-sm"><code>┌─────────────────────────────────────────────────────────────┐
+│                        USER BROWSER                           │
+│                    (React Frontend)                           │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐       │
+│  │ Image Upload │  │ Sensor Input │  │ Results View │       │
+│  └──────┬───────┘  └──────┬───────┘  └──────┬───────┘       │
+└─────────┼────────────────┼──────────────────┼────────────────┘
+          │                │                  │
+          │ HTTP POST      │                  │
+          ▼                ▼                  ▼
+┌─────────────────────────────────────────────────────────────┐
+│                    FLASK BACKEND API                          │
+│                  (Port 5000)                                  │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐       │
+│  │ /predict     │  │ /health      │  │ Data Processing │     │
+│  │ Endpoint     │  │ Check        │  │ & Validation │       │
+│  └──────┬───────┘  └──────────────┘  └──────┬───────┘       │
+└─────────┼──────────────────────────────────┼────────────────┘
+          │                                  │
+          │                                  │
+          ▼                                  ▼
+┌──────────────────┐            ┌──────────────────────────┐
+│   CNN Model      │            │  Random Forest Models    │
+│  (Image Analysis)│            │  (Sensor Analysis)       │
+│  - Healthy       │            │  - ROP Prediction        │
+│  - Medium        │            │  - Phase Classification  │
+│  - Worn          │            │  - Anomaly Detection      │
+└────────┬─────────┘            └──────────┬───────────────┘
+         │                                 │
+         └────────────┬────────────────────┘
+                      ▼
+            ┌─────────────────────┐
+            │   Fusion Layer      │
+            │  (Combined Results) │
+            │  - RUI Calculation  │
+            │  - Risk Assessment  │
+            │  - Recommendations  │
+            └──────────┬──────────┘
+                       │
+                       ▼
+              ┌────────────────┐
+              │ JSON Response  │
+              │  to Frontend   │
+              └────────────────┘</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: Technical Ingredients -->
+        <section id="technical" class="mb-16 animate-fade-in">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="section-number">5</div>
+                <h2 class="text-3xl font-bold">Technical Ingredients</h2>
+            </div>
+
+            <div class="card p-8 mb-8">
+                <h3 class="text-2xl font-semibold text-blue-600 mb-4">The Tools We Used (ELI5)</h3>
+                <p class="text-gray-700 text-lg leading-relaxed mb-6">
+                    Building this AI is like cooking a complex recipe. Here are our main ingredients and what each one does:
+                </p>
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-blue-50 p-6 rounded-xl">
+                        <h4 class="font-bold text-blue-800 mb-2">Python</h4>
+                        <p class="text-gray-700 text-sm">The main programming language - like the chef who puts everything together.</p>
+                    </div>
+                    <div class="bg-green-50 p-6 rounded-xl">
+                        <h4 class="font-bold text-green-800 mb-2">TensorFlow/Keras</h4>
+                        <p class="text-gray-700 text-sm">Builds the CNN image model - like a special tool for understanding pictures.</p>
+                    </div>
+                    <div class="bg-yellow-50 p-6 rounded-xl">
+                        <h4 class="font-bold text-yellow-800 mb-2">Scikit-learn</h4>
+                        <p class="text-gray-700 text-sm">Creates the Random Forest models - like a wise council of experts.</p>
+                    </div>
+                    <div class="bg-purple-50 p-6 rounded-xl">
+                        <h4 class="font-bold text-purple-800 mb-2">Pandas</h4>
+                        <p class="text-gray-700 text-sm">Organizes data neatly - like a super-powered spreadsheet.</p>
+                    </div>
+                    <div class="bg-pink-50 p-6 rounded-xl">
+                        <h4 class="font-bold text-pink-800 mb-2">Flask</h4>
+                        <p class="text-gray-700 text-sm">Runs the backend server - like the restaurant kitchen that receives orders.</p>
+                    </div>
+                    <div class="bg-indigo-50 p-6 rounded-xl">
+                        <h4 class="font-bold text-indigo-800 mb-2">React</h4>
+                        <p class="text-gray-700 text-sm">Builds the user interface - like the beautiful dining room where customers sit.</p>
+                    </div>
+                    <div class="bg-red-50 p-6 rounded-xl">
+                        <h4 class="font-bold text-red-800 mb-2">Tailwind CSS</h4>
+                        <p class="text-gray-700 text-sm">Makes everything look pretty - like the interior designer.</p>
+                    </div>
+                    <div class="bg-teal-50 p-6 rounded-xl">
+                        <h4 class="font-bold text-teal-800 mb-2">NumPy</h4>
+                        <p class="text-gray-700 text-sm">Does fast math calculations - like a calculator on steroids.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card p-8">
+                <h3 class="text-2xl font-semibold text-blue-600 mb-4">Complete Library List</h3>
+                
+                <div class="space-y-6">
+                    <div>
+                        <h4 class="font-bold text-gray-800 mb-3 flex items-center gap-2">
+                            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                            Python Libraries (Backend)
+                        </h4>
+                        <div class="bg-gray-50 p-4 rounded-lg overflow-x-auto">
+                            <pre><code class="language-python"># Core ML/Data Libraries
+tensorflow==2.21.0          # Deep learning framework
+scikit-learn               # Machine learning algorithms
+pandas                     # Data manipulation
+numpy                      # Numerical computing
+joblib                     # Model serialization
+
+# Web Framework
+flask==2.3.3               # Backend API
+flask-cors                 # Cross-origin support
+
+# Image Processing
+Pillow                     # Image handling
+
+# Utilities
+json                       # Data serialization
+os, sys                    # System operations</code></pre>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 class="font-bold text-gray-800 mb-3 flex items-center gap-2">
+                            <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-4-1-4 1M4 7l4-1M4 7l4 1M4 7v4l4 1m4-1l4-1m4 1v4l-4 1m-4-1l-4 1m4-1v-2.5m0 0V4m0 0l-4-1m4 1l4-1"></path></svg>
+                            JavaScript Libraries (Frontend)
+                        </h4>
+                        <div class="bg-gray-50 p-4 rounded-lg overflow-x-auto">
+                            <pre><code class="language-javascript">// Core Framework
+react==19.0.0              // UI library
+react-dom==19.0.0          // React DOM renderer
+
+// Build Tools
+vite==6.2.0                // Build tool & dev server
+typescript==5.8.2          // Type-safe JavaScript
+
+// UI Components & Styling
+tailwindcss==4.1.14        // Utility-first CSS
+@tailwindcss/vite          // Tailwind + Vite integration
+shadcn/ui                  // Pre-built components
+lucide-react               // Icon library
+
+// Animation & Effects
+motion==12.23.24           // Animation library
+
+// Data Visualization
+recharts==3.8.1            // Charting library
+
+// HTTP Client
+axios==1.6.0               // API requests
+
+// Utilities
+clsx                       // Conditional className
+tailwind-merge             // Tailwind class merging</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6: Project Map -->
+        <section id="project-map" class="mb-16 animate-fade-in">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="section-number">6</div>
+                <h2 class="text-3xl font-bold">Project Map</h2>
+            </div>
+
+            <div class="card p-8">
+                <h3 class="text-2xl font-semibold text-blue-600 mb-4">Directory Structure</h3>
+                <p class="text-gray-700 mb-6">Here's how our project is organized, like a well-organized filing cabinet:</p>
+
+                <div class="bg-gray-900 text-green-400 p-6 rounded-xl overflow-x-auto text-sm font-mono">
+                    <pre>AI Project/
+├── data/                          # All training data
+│   ├── data.csv                      # Sensor data (9,998 rows)
+│   └── imgs/                         # Drill bit images
+│       ├── Healthy/                  # 43 images
+│       ├── Medium/                   # 19 images
+│       └── Worn/                     # 18 images
+│
+├── models/                        # Trained AI models
+│   ├── rf_rop_model.pkl              # Rate of Penetration predictor
+│   ├── rf_phase_model.pkl            # Operational phase classifier
+│   ├── rf_anomaly_model.pkl          # Anomaly detector
+│   ├── fusion_rop_model.pkl          # Combined ROP model
+│   ├── fusion_risk_model.pkl         # Combined risk model
+│   ├── cnn_image_classifier.h5      # Image classification CNN
+│   ├── phase_encoder.pkl             # Label encoder for phases
+│   ├── sensor_features.pkl          # Feature names list
+│   └── metadata.json                # Model configuration
+│
+├── notebooks/                     # Jupyter analysis notebooks
+│   ├── drilling_analysis.ipynb       # Exploratory data analysis
+│   ├── sensors_data.ipynb            # Random Forest training
+│   ├── img.ipynb                     # CNN image training
+│   └── combined_model.ipynb          # Multi-modal fusion
+│
+├── scripts/                       # Utility Python scripts
+│   ├── combined.py                   # Fusion mechanism implementation
+│   ├── data.py                       # Data prediction functions
+│   └── img.py                        # Image processing utilities
+│
+├── webapp/                        # Full-stack web application
+│   ├── Back/                      # Backend API (Flask)
+│   │   ├── app_simple.py             # Main Flask application
+│   │   ├── requirements_simple.txt   # Python dependencies
+│   │   └── models/                   # Model storage
+│   │
+│   └── Front/                     # Frontend (React + Vite)
+│       ├── src/
+│       │   ├── App.tsx               # Main React component
+│       │   ├── components/           # UI components
+│       │   │   ├── ImageUpload.tsx
+│       │   │   ├── ParameterInput.tsx
+│       │   │   ├── Gauge.tsx
+│       │   │   ├── HistoryPage.tsx
+│       │   │   ├── AnalyticsPage.tsx
+│       │   │   └── SettingsPage.tsx
+│       │   └── lib/                  # Utility functions
+│       ├── package.json              # JavaScript dependencies
+│       └── vite.config.ts            # Vite configuration
+│
+├── reports/                       # Generated analysis reports
+├── Print/                         # Print-ready documents
+│
+├── create_models.py                 # Model training pipeline
+├── readme.md                        # Project overview
+├── user_manual.md                    # User documentation
+└── documentation.html                # This file!</pre>
+                </div>
+
+                <div class="mt-6 grid md:grid-cols-2 gap-6">
+                    <div class="bg-blue-50 p-4 rounded-xl">
+                        <h4 class="font-bold text-blue-800 mb-2">Key Folders Explained</h4>
+                        <ul class="text-sm text-gray-700 space-y-1">
+                            <li><strong>data/</strong> - Raw training materials</li>
+                            <li><strong>models/</strong> - Trained AI brains</li>
+                            <li><strong>notebooks/</strong> - Research lab</li>
+                            <li><strong>scripts/</strong> - Helper tools</li>
+                        </ul>
+                    </div>
+                    <div class="bg-green-50 p-4 rounded-xl">
+                        <h4 class="font-bold text-green-800 mb-2">Web App Structure</h4>
+                        <ul class="text-sm text-gray-700 space-y-1">
+                            <li><strong>webapp/Back/</strong> - Kitchen (API server)</li>
+                            <li><strong>webapp/Front/</strong> - Dining room (UI)</li>
+                            <li><strong>components/</strong> - Reusable UI pieces</li>
+                            <li><strong>lib/</strong> - Shared utilities</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 7: The Project Story -->
+        <section id="story" class="mb-16 animate-fade-in">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="section-number">7</div>
+                <h2 class="text-3xl font-bold">The Project Story</h2>
+            </div>
+
+            <div class="card p-8 mb-8">
+                <h3 class="text-2xl font-semibold text-blue-600 mb-4">The Complete Narrative</h3>
+                <p class="text-gray-700 text-lg leading-relaxed mb-6">
+                    Here's the full story of how we built the Advanced Drilling Analysis System – from identifying the problem to deploying the solution.
+                </p>
+
+                <div class="space-y-8">
+                    <div class="bg-yellow-50 p-6 rounded-xl border-l-4 border-yellow-500">
+                        <h4 class="font-bold text-yellow-800 mb-2 flex items-center gap-2">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> Chapter 1: The Problem in the Desert
+                        </h4>
+                        <p class="text-gray-700">Imagine you're in the middle of a desert, drilling deep into the earth to find oil. You have massive machines, expensive equipment, and teams of skilled workers. But there's one problem: <strong>you never really know when your drill bit is about to fail.</strong></p>
+                        <p class="text-gray-700 mt-2">Drill bits are like the teeth of the entire operation. When they wear out, everything stops. Replacing them costs millions of dollars in downtime. Sometimes they fail unexpectedly, causing delays and safety risks. Other times, operators replace them too early, wasting perfectly good equipment.</p>
+                        <p class="text-gray-700 mt-2">This is the story of how we built an AI system that could <strong>see the future</strong> – or at least, predict when drill bits need replacement.</p>
+                    </div>
+
+                    <div class="bg-orange-50 p-6 rounded-xl border-l-4 border-orange-500">
+                        <h4 class="font-bold text-orange-800 mb-2 flex items-center gap-2">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg> Chapter 2: The Data Treasure Hunt
+                        </h4>
+                        <p class="text-gray-700 mb-2">Our journey began with a simple question: <em>What data do we have?</em></p>
+                        <p class="text-gray-700 mb-2">Like detectives searching for clues, we discovered two treasure troves:</p>
+                        <ul class="list-disc list-inside text-gray-700 space-y-1 ml-4">
+                            <li><strong>The Numbers Treasure:</strong> A file called <code>data.csv</code> containing <strong>9,998 rows</strong> of sensor measurements – 9,998 diary entries from the drilling machine itself.</li>
+                            <li><strong>The Pictures Treasure:</strong> Folders of drill bit photographs – 43 healthy, 19 medium-wear, 18 worn-out images. Visual evidence of equipment condition.</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-red-50 p-6 rounded-xl border-l-4 border-red-500">
+                        <h4 class="font-bold text-red-800 mb-2 flex items-center gap-2">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg> Chapter 3: Cleaning the Mess
+                        </h4>
+                        <p class="text-gray-700">Data is never perfect. It's like finding a treasure chest covered in mud. We renamed confusing abbreviations, checked for missing information, and created new "smart features" by combining existing ones – like creating new measuring tools from existing ones.</p>
+                    </div>
+
+                    <div class="bg-green-50 p-6 rounded-xl border-l-4 border-green-500">
+                        <h4 class="font-bold text-green-800 mb-2 flex items-center gap-2">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg> Chapter 4: The Discovery Phase
+                        </h4>
+                        <p class="text-gray-700 mb-2">With clean data, we started playing detective. We found amazing secrets:</p>
+                        <ul class="list-disc list-inside text-gray-700 space-y-1 ml-4">
+                            <li>Specific Energy and Drilling Strength were 99.3% correlated – they move together almost perfectly</li>
+                            <li>The operation naturally fell into three states: High Efficiency (32.8%), Normal Operations (33.8%), Low Efficiency (32.8%)</li>
+                            <li>About 5% of data showed unusual patterns – potential problems waiting to happen</li>
+                            <li>Surface Motor Speed and Weight on Bit were the most important factors in predicting drilling speed</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-purple-50 p-6 rounded-xl border-l-4 border-purple-500">
+                        <h4 class="font-bold text-purple-800 mb-2 flex items-center gap-2">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg> Chapter 5: Building the AI Brain
+                        </h4>
+                        <p class="text-gray-700 mb-2">We built three AI experts:</p>
+                        <ul class="list-disc list-inside text-gray-700 space-y-1 ml-4">
+                            <li><strong>The Image Expert (CNN):</strong> An artificial eye that looks at drill bit photos and decides Healthy/Medium/Worn. Achieved 57% accuracy (limited by small dataset).</li>
+                            <li><strong>The Number Expert (Random Forest):</strong> Like asking 100 experts for their opinion. Predicted drilling speed with 99% accuracy, classified operational phase with 65% accuracy, and detected anomalies with 100% accuracy.</li>
+                            <li><strong>The Fusion Master:</strong> Combined both experts' opinions, calculated a Risk-Utility Index (RUI) score, and provided comprehensive predictions.</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-blue-50 p-6 rounded-xl border-l-4 border-blue-500">
+                        <h4 class="font-bold text-blue-800 mb-2 flex items-center gap-2">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg> Chapter 6: Building the User Interface
+                        </h4>
+                        <p class="text-gray-700 mb-2">An AI is useless if people can't use it. We built a web application:</p>
+                        <ul class="list-disc list-inside text-gray-700 space-y-1 ml-4">
+                            <li><strong>Frontend (React):</strong> A beautiful interface where users upload photos and enter sensor measurements – the dining room where users interact.</li>
+                            <li><strong>Backend (Flask):</strong> A Python server that receives requests, validates data, runs AI models, and returns predictions – the kitchen where work happens.</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-indigo-50 p-6 rounded-xl border-l-4 border-indigo-500">
+                        <h4 class="font-bold text-indigo-800 mb-2 flex items-center gap-2">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg> Chapter 7: The Complete System
+                        </h4>
+                        <p class="text-gray-700">Data flows from sensors → storage → processing → training → deployment → inference. The technology stack includes Python (TensorFlow, Scikit-learn), Flask for the backend, and React + Tailwind CSS for the frontend.</p>
+                    </div>
+
+                    <div class="bg-teal-50 p-6 rounded-xl border-l-4 border-teal-500">
+                        <h4 class="font-bold text-teal-800 mb-2 flex items-center gap-2">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> Chapter 8: Business Impact
+                        </h4>
+                        <p class="text-gray-700 mb-2">Why does all this matter?</p>
+                        <ul class="list-disc list-inside text-gray-700 space-y-1 ml-4">
+                            <li><strong>Cost Savings:</strong> Predictive maintenance means replacing drill bits at the right time – not too early (wasting money) and not too late (causing failures)</li>
+                            <li><strong>Operational Efficiency:</strong> Real-time optimization of drilling parameters improves rate of penetration</li>
+                            <li><strong>Risk Management:</strong> Early anomaly detection prevents equipment failures and safety incidents</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-pink-50 p-6 rounded-xl border-l-4 border-pink-500">
+                        <h4 class="font-bold text-pink-800 mb-2 flex items-center gap-2">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg> Chapter 9: Lessons Learned
+                        </h4>
+                        <p class="text-gray-700 mb-2"><strong>What Worked Well:</strong> Random Forest models performed exceptionally on sensor data; feature engineering dramatically improved predictions; fusion approach provided robust results.</p>
+                        <p class="text-gray-700 mb-2"><strong>Challenges:</strong> Limited image data (only 80 photos); data imbalance between classes; balancing accuracy with interpretability.</p>
+                        <p class="text-gray-700"><strong>Future Improvements:</strong> Collect more images, real-time streaming of sensor data, mobile app for field operators, advanced deep learning architectures.</p>
+                    </div>
+
+                    <div class="bg-gradient-to-r from-blue-100 to-purple-100 p-6 rounded-xl border-l-4 border-blue-600">
+                        <h4 class="font-bold text-blue-800 mb-2 flex items-center gap-2">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> Epilogue: The Story Continues
+                        </h4>
+                        <p class="text-gray-700">This AI system is not the end – it's the beginning. As more data is collected, the models will get smarter. As more operators use the system, we'll discover new insights and improvements.</p>
+                        <p class="text-gray-700 mt-2">The journey from raw data to intelligent predictions shows what's possible when we combine domain expertise, data science, machine learning, and software engineering. The drill bit AI is now helping operators make better decisions, save money, and drill more efficiently.</p>
+                        <p class="text-gray-700 mt-2 italic">And that's the best kind of story – one where technology solves real problems and creates real value.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="text-center text-gray-600 py-8 border-t border-gray-200">
+            <p class="mb-2">Advanced Drilling Analysis System</p>
+            <p class="text-sm">Documentation generated on April 23, 2026</p>
+            <p class="text-sm mt-2">
+                <span class="inline-block bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs">Multi-Modal AI</span>
+                <span class="inline-block bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs ml-2">Predictive Maintenance</span>
+                <span class="inline-block bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-xs ml-2">Real-Time Analysis</span>
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Highlight code blocks on load
+        if (typeof Prism !== 'undefined') {
+            Prism.highlightAll();
+        }
+    </script>
+</body>
+</html>
